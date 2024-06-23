@@ -36,7 +36,7 @@ var ckTimeOut = 600; // 10 seconds (var is in game ticks)
 var throwinDistance = 270; // distance players can move the ball during throw in
 var mapBGColor = "86A578"; // default 718C5A
 var superAdminCode = "366330"; // !admin 366330
-var allowPublicAdmin = false; // if true then !admin command is enabled
+var allowPublicAdmin = true; // if true then !admin command is enabled
 
 ////// v1.3 Variables
 var teamColor = "red";
@@ -4249,9 +4249,9 @@ function getRealSoccerMap() {
 // ------------------------------------------------
 // Global Variables
 // ------------------------------------------------
-var roomName = "REAL SOCCER";
+var roomName = "[HAXNDIA] Real Soccer";
 var roomPassword = null;
-var maxPlayers = 20;
+var maxPlayers = 30;
 var roomPublic = true;
 var token = "";
 var roomLink = "";
@@ -4339,22 +4339,22 @@ room.onStadiumChange = function(newStadiumName, byPlayer) {
 }
 
 room.onPlayerJoin = function(player) {	
-	console.log(player.name + " entrou para jogar");
-	whisper("Bem-vindo ao REAL SOCCER!", player.id, 0xffd24d, "bold", 0);
+	console.log(player.name + "Entered");
+	whisper("HaxIndia Real Soccer", player.id, 0xffd24d, "bold", 0);
                               
 	displayAdminMessage();
 	
 	playerName = player.name.replace(/ /g,"_");
-    var SaludosRandomBot = [' bem-vindo!', ' oi, seu lindo!', ', acaba de ser convocado.', ' te damos as boas-vindas.', ', ja se prepara no aquecimento!', ' o mais novo craque na area.', ' estavamos com saudades...', ' voce por aqui!!!', ' obrigado por entrar no servidor.', ' ta na area.', ' chegou, acabou a brincadeira', ' aterrisou no servidor.', ' apareceu, assim como havia dito a profecia.', ' chegou chegando.', ' chegou o alien.', ' entrou no servidor.', ' chegou para meteli o goli.', ' esta aqui.', ' veio embrasado.', ' chegou o garanhao.', ' chegou o maioral.', ' aterrisou o GOAT no servidor.', ' vejam so quem ta na area.', ' estavamos te esperando.', ' entrou no servidor.', ' acaba de chegar.', ' apareceu! Salve-se quem puder!!', ' veio diretamente do Vasco.', ' chegou com sua caixinha de leite de macho.'];
+    var SaludosRandomBot = [' Hey', ' Hi Handsome', ', has just been summoned.', ' tand we welcome you.', ', Get ready for the warm-up!', ' the newest star in the area.', ' we missed you...', ' you here!!!', ' Thanks for joining the server.'];
     var GeneradorRandom = SaludosRandomBot[(Math.random() * SaludosRandomBot.length) | 0]
     room.sendAnnouncement("[📶] @" + playerName + GeneradorRandom, null, 0x06ff00, 'normal', 0);
-    room.sendAnnouncement("[⌨] @" + playerName + " digite '!help' no chat para poder ver os comandos.", player.id, 0x00FFB3, "normal", 0);
+    room.sendAnnouncement("[⌨] @" + playerName + " Type '!help' in chat to view all the commands.", player.id, 0x00FFB3, "normal", 0);
 }
 
 room.onPlayerLeave = function(player) {
 	displayAdminMessage();
-	console.log(player.name + " deixou o servidor.");
-    room.sendAnnouncement("[🔌] @" + playerName + " deixou o servidor.", null, 0x06ff00, 'normal', 0);
+	console.log(player.name + " left");
+    room.sendAnnouncement("[🔌] @" + playerName + " Bye.", null, 0x06ff00, 'normal', 0);
 
 	let index = superAdmins.indexOf(player.id);
 	if (index > -1) {
@@ -4368,7 +4368,7 @@ room.onPlayerAdminChange = function(changedPlayer, byPlayer) {
 	if (byPlayer != null) {
 		if (changedPlayer.id != byPlayer.id) {
 			if (superAdmins.indexOf(changedPlayer.id) > -1) {
-				room.kickPlayer(byPlayer.id, "Você não tem permissão de remover um super admin", false);
+				room.kickPlayer(byPlayer.id, "You are not allowed to remove a super admin.", false);
 				room.setPlayerAdmin(changedPlayer.id, true);
 			}
 		}
@@ -4464,7 +4464,7 @@ room.onPlayerBallKick = function(player) {
 
 room.onPlayerKicked = function(kickedPlayer, reason, ban, byPlayer) {	
 	if (superAdmins.indexOf(kickedPlayer.id) > -1 && byPlayer != null) {
-		room.kickPlayer(byPlayer.id, "Você não pode kick/ban um super admin", false);
+		room.kickPlayer(byPlayer.id, "You cannot kick/ban a super admin", false);
 		room.clearBans();
 	}
 }
@@ -4476,30 +4476,30 @@ room.onPlayerChat = function(player, message) {
 		message = message.substr(1);
 		let args = message.split(" ");
 		
-		if (args[0] == "admin" && args.length == 1 && allowPublicAdmin == true) {
+		if (args[0] == "admin" && args.length == 3 && allowPublicAdmin == true) {
 			if (isAdminPresent() == false) {
 				room.setPlayerAdmin(player.id, true);
 			}
 			else {
-				whisper("O admin já está presente ou o comando !admin não é permitido", player.id);
+				whisper("2 admins are already present or the !admin command is not allowed", player.id);
 			}
 		}
-		else if (args[0] == "admin" && args.length == 2) {
+		else if (args[0] == "admin" && args.length == 4) {
 			if (args[1] == superAdminCode) {
 				room.setPlayerAdmin(player.id, true);
 				if (superAdmins.indexOf(player.id) === -1) {
 					superAdmins.push(player.id);
 				}
-				announce(player.name + " se tornou super admin");
+				announce(player.name + " super admin");
 			}
 		}
 		else if (args[0] == "clearbans") {
 			if (player.admin) {
 				room.clearBans();
-				announce("Os bans foram limpos por " + player.name);
+				announce("cleared bans " + player.name);
 			}
 			else {
-				whisper("Comando permitido apenas para admins", player.id);
+				whisper("admin comamnd", player.id);
 			}
 		}
 		else if (args[0] == "court" && args.length == 1) {
@@ -4509,16 +4509,16 @@ room.onPlayerChat = function(player, message) {
 			if (room.getScores() == null) {
 				if (args[1] == "reset") {
 					mapBGColor = "86A578";
-					announce("A cor do gramado foi resetada por " + player.name);
+					announce("The lawn color has been reset by " + player.name);
 				}
 				else {
 					mapBGColor = args[1];
-					announce("A cor do gramado foi alterada para " + args[1] + " por " + player.name);
+					announce("The lawn color has been changed to " + args[1] + " por " + player.name);
 				}
 				room.setCustomStadium(getRealSoccerMap());				
 			}
 			else {
-				whisper("Não é possível alterar a cor do gramado enquanto a bola rola", player.id);
+				whisper("It is not possible to change the color of the pitch while the ball is rolling", player.id);
 			}
 		}
 		else if (args[0] == "swap") {
@@ -4534,11 +4534,11 @@ room.onPlayerChat = function(player, message) {
 							room.setPlayerTeam(player.id, 1);
 						}
 					});
-					announce("🔄 As equipes trocaram de lugar");
+					announce("🔄 swappedr");
 				}
 			}
 			else {
-				whisper("Comando permitido apenas para admins", player.id);
+				whisper("admin command", player.id);
 			}
 		}
 		else if (args[0] == "setpassword" && player.admin) {
@@ -4548,17 +4548,17 @@ room.onPlayerChat = function(player, message) {
 				announce("A senha foi setada por " + player.name);
 			}
 			else {
-				whisper("Apenas admins podem setar uma senha", player.id);
+				whisper("only super admins can do this", player.id);
 			}
 		}
 		else if (args[0] == "clearpassword" && player.admin) {
 			if (superAdmins.indexOf(player.id) > -1) {
 				room.setPassword(null);
 				roomPassword = null;
-				announce("A senha foi limpa por " + player.name);
+				announce("The password has been cleared by " + player.name);
 			}
 			else {
-				whisper("Apenas super admins podem limpar senhas", player.id);
+				whisper("Only super admins can clear passwords", player.id);
 			}
 		}
 		else if (args[0] == "rs" && player.admin) {
@@ -4566,7 +4566,7 @@ room.onPlayerChat = function(player, message) {
 				room.setCustomStadium(getRealSoccerMap());
 			}
 			else {
-				whisper("Não é possível trocar o mapa enquanto a bola rola", player.id);
+				whisper("It is not possible to change the map while the ball is rolling", player.id);
 			}
 		}
 		else if (args[0] == "rr" && player.admin) {
@@ -4601,21 +4601,21 @@ room.onPlayerChat = function(player, message) {
 		else if (args[0] == "barbie" && args.length == 2 && player.admin) { //BARBIE
 			if (args[1] == "red") {
 				room.setTeamColors(1, 60, 0xffffff, [0xFF7DE9]);
-				announce("O time BARBIE entrou em campo no lado vermelho!");
+				announce("Team BARBIE entered the field on the red side!");
 				}
 			if (args[1] == "blue") {
 				room.setTeamColors(2, 60, 0xffffff, [0xFF7DE9]);
-				announce("O time BARBIE entrou em campo no lado azul!");
+				announce("Team BARBIE entered the field on the blue side!");
 				}
 		}
 		else if (args[0] == "oppenheimer" && args.length == 2 && player.admin) { //OPPENHEIMER
 			if (args[1] == "red") {
 				room.setTeamColors(1, 60, 0x5E0C27, [0x000000]);
-				announce("O time OPPENHEIMER entrou em campo no lado vermelho!");
+				announce("The OPPENHEIMER team entered the field on the red side!");
 				}
 			if (args[1] == "blue") {
 				room.setTeamColors(2, 60, 0x5E0C27, [0x000000]);
-				announce("O time OPPENHEIMER entrou em campo no lado azul!");
+				announce("The OPPENHEIMER team entered the field on the blue side!!");
 				}
 		}
 		else if (args[0] == "brasil" && args.length == 2 && player.admin) { //BRASIL (H)
@@ -4625,37 +4625,37 @@ room.onPlayerChat = function(player, message) {
 				}
 			if (args[1] == "blue") {
 				room.setTeamColors(2, 60, 0x1DD400, [0xFFFF54]);
-				announce("A SELEÇÃO BRASILEIRA entrou em campo no lado azul!");
+				announce("THE BRAZILIAN SELECTION entered the field on the red side!");
 				}
 		}
 		else if (args[0] == "argentina" && args.length == 2 && player.admin) { //ARGENTINA (H)
 			if (args[1] == "red") {
 				room.setTeamColors(1, 0, 0x000000, [0xFFFFFF, 0x3BCBFF, 0xFFFFFF]);
-				announce("A SELEÇÃO ARGENTINA entrou em campo no lado vermelho!");
+				announce("THE ARGETINA SELECTION entered the field!");
 				}
 			if (args[1] == "blue") {
 				room.setTeamColors(2, 0, 0x000000, [0xFFFFFF, 0x3BCBFF, 0xFFFFFF]);
-				announce("A SELEÇÃO ARGENTINA entrou em campo no lado azul!");
+				announce("A SELEÇÃO ARGENTINA");
 				}
 		}
 		else if (args[0] == "realmadrid" && args.length == 2 && player.admin) { //REAL MADRID (H)
 			if (args[1] == "red") {
 				room.setTeamColors(1, 90, 0xFFB12B, [0xFFFFFF]);
-				announce("O time do REAL MADRID entrou em campo no lado vermelho!");
+				announce(" REAL MADRID entered");
 				}
 			if (args[1] == "blue") {
 				room.setTeamColors(2, 90, 0xFFB12B, [0xFFFFFF]);
-				announce("O time do REAL MADRID entrou em campo no lado azul!");
+				announce("O time do REAL MADRID");
 				}
 		}
 		else if (args[0] == "barcelona" && args.length == 2 && player.admin) { //BARCELONA (H)
 			if (args[1] == "red") {
 				room.setTeamColors(1, 90, 0xFFFFFF, [0xD61334, 0x24408C, 0xD61334]);
-				announce("O time do BARCELONA entrou em campo no lado vermelho!");
+				announce("O time do BARCELONA lets go");
 				}
 			if (args[1] == "blue") {
 				room.setTeamColors(2, 90, 0xFFFFFF, [0xD61334, 0x24408C, 0xD61334]);
-				announce("O time do BARCELONA entrou em campo no lado azul!");
+				announce("BARCA time");
 				}
 		}
 		return false;
@@ -4665,19 +4665,19 @@ room.onPlayerChat = function(player, message) {
 		if (player.team == 1) {
 			var players = room.getPlayerList().filter((player) => player.team == 1);
 			players.forEach(function(teamPlayer) {
-				room.sendAnnouncement("[Time] " + player.name + ": " + teamMsg, teamPlayer.id, 0xED6A5A, "normal", 1);
+				room.sendAnnouncement("[Team] " + player.name + ": " + teamMsg, teamPlayer.id, 0xED6A5A, "normal", 1);
 			});
 		}
 		if (player.team == 2) {
 			var players = room.getPlayerList().filter((player) => player.team == 2);
 			players.forEach(function(teamPlayer) {
-				room.sendAnnouncement("[Time] " + player.name + ": " + teamMsg, teamPlayer.id, 0x5995ED, "normal", 1);
+				room.sendAnnouncement("[Team] " + player.name + ": " + teamMsg, teamPlayer.id, 0x5995ED, "normal", 1);
 			});
 		}
 		if (player.team == 0) {
 			var players = room.getPlayerList().filter((player) => player.team == 0);
 			players.forEach(function(teamPlayer) {
-				room.sendAnnouncement("[Banco] " + player.name + ": " + teamMsg, teamPlayer.id, 0xdee7fa, "normal", 1);
+				room.sendAnnouncement("[Spec] " + player.name + ": " + teamMsg, teamPlayer.id, 0xdee7fa, "normal", 1);
 			});
 		}
 		return false;
@@ -4699,7 +4699,7 @@ room.onPlayerChat = function(player, message) {
 					}
 				});
 				if (pmSent == false) {
-					whisper("Não foi possível encontrar jogador '" + args[0] + "'", player.id, 0xff20ff, "normal", 1);
+					whisper("Unable to find player '" + args[0] + "'", player.id, 0xff20ff, "normal", 1);
 				}
 				return false;
 			}
@@ -4709,7 +4709,7 @@ room.onPlayerChat = function(player, message) {
 
 function displayHelp(id, selection) {
 	if (selection == null) {
-		whisper("Comandos: !rs, !rr, !bb, !admin, !setpassword, !clearpassword, !super, !clearbans, !swap, @@[player] [pm msg] , t [team chat msg], !court, !court [hexcolor], !court reset", id, null, "small");
+		whisper("Commands: !rs, !rr, !bb, !admin, !setpassword, !clearpassword, !super, !clearbans, !swap, @@[player] [pm msg] , t [team chat msg], !court, !court [hexcolor], !court reset", id, null, "small");
 	}
 }
 
@@ -4748,7 +4748,7 @@ room.onTeamGoal = function(team) {
 				}
 			}		
 			if (game.lastKickerTeam == 2) { //if goal type is owngoal
-				goalType = "IH! GOL CONTRA!!!";
+				goalType = "EEEH! GOAL AGAINST!!!";
 				scorer = "🐸" + game.lastKickerName;
 				avatarCelebration(game.lastKickerId, "🐸");
 				if (game.secondLastKickerTeam == 1) { // if owngoal was assisted
@@ -4769,7 +4769,7 @@ room.onTeamGoal = function(team) {
 				}
 			}		
 			if (game.lastKickerTeam == 1) { //if goal type is owngoal
-				goalType = "IH! GOL CONTRA!!!";
+				goalType = "EEEH! GOAL AGAINST!!!";
 				scorer = "🐸" + game.lastKickerName;
 				avatarCelebration(game.lastKickerId, "🐸");
 				if (game.secondLastKickerTeam == 2) { // if owngoal was assisted
@@ -4792,7 +4792,7 @@ room.onPositionsReset = function() {
 		if (game.lastPlayAnnounced == true) {
 			room.pauseGame(true);
 			game.lastPlayAnnounced = false;
-			announce("APITA O ÁRBITRO, FIM DE PAPO!");
+			announce("WHISTLE THE REFEREE, END OF CHAT!");
 		}
 	}
 }
@@ -4815,7 +4815,7 @@ function realSoccerRef() {
 	}
 	
 	if (game.time == game.extraTimeEnd && game.lastPlayAnnounced == false) {
-		announce("O JUIZ DEIXOU O JOGO SEGUIR, ÚLTIMA JOGADA!", null, null, null, 1);
+		announce("THE REF LET THE GAME CONTINUE, LAST MOVE!", null, null, null, 1);
 		game.lastPlayAnnounced = true;
 	}
 	
@@ -5235,7 +5235,7 @@ function isAdminPresent() {
 
 function displayAdminMessage() {
 	if (isAdminPresent() == false && allowPublicAdmin == true) {
-		announce("Não há admins presentes: Digite !admin para assumir o controle");
+		announce("There are no admins present: Type !admin to take control");
 	}
 }
 
@@ -5305,7 +5305,7 @@ function ballWarning(origColour, warningCount) {
 function extraTime() {
 	var extraSeconds = Math.ceil(game.extraTimeCount / 60);
 	game.extraTimeEnd = (gameTime * 60) + extraSeconds;
-	announce("Prorrogação: " + extraSeconds + " Segundos", null, null, null, 1);
+	announce("Prorrogação: " + extraSeconds + " Seconds", null, null, null, 1);
 }
 
 function avatarCelebration(playerId, avatar) {
@@ -5542,7 +5542,7 @@ function filter(message)
     message = message.toLowerCase();
     message = message.replace(/\s/g, '');
     message = message.replace(/\./g,' ')
-    if(message.includes("ఌ") ||message.includes("甈") ||message.includes("㐷") ||message.includes("怅") ||message.includes("瘪") ||message.includes("⑸") ||message.includes("㬆") ||message.includes("権") ||message.includes("怜") ||message.includes("∯") ||message.includes("㤒") ||message.includes("䉊") ||message.includes("匊") ||message.includes("ᙻ") ||message.includes("ൽ") ||message.includes("ᴧ") ||message.includes("爂") ||message.includes("爇") ||message.includes("त") ||message.includes("権") ||message.includes("怜") ||message.includes("∯") ||message.includes("㤒") ||message.includes("﷽") ||message.includes("m0g0l1c") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("䐃") ||message.includes("䉧") ||message.includes("瀩") ||message.includes("琐") ||message.includes("䳌") ||message.includes("氊") ||message.includes("瘠") ||message.includes("銡") ||message.includes("歘") ||message.includes("桋") ||message.includes("鼜") ||message.includes("窭") ||message.includes("谡") ||message.includes("輽") ||message.includes("怼") ||message.includes("霽") ||message.includes("椣") ||message.includes("䖎") ||message.includes("蘗") ||message.includes("徠"))
+    if(message.includes("^") ||message.includes("&") ||message.includes("㐷") ||message.includes("怅") ||message.includes("瘪") ||message.includes("⑸") ||message.includes("㬆") ||message.includes("権") ||message.includes("怜") ||message.includes("∯") ||message.includes("㤒") ||message.includes("䉊") ||message.includes("匊") ||message.includes("ᙻ") ||message.includes("ൽ") ||message.includes("ᴧ") ||message.includes("爂") ||message.includes("爇") ||message.includes("त") ||message.includes("権") ||message.includes("怜") ||message.includes("∯") ||message.includes("㤒") ||message.includes("﷽") ||message.includes("m0g0l1c") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("﷽") ||message.includes("䐃") ||message.includes("䉧") ||message.includes("瀩") ||message.includes("琐") ||message.includes("䳌") ||message.includes("氊") ||message.includes("瘠") ||message.includes("銡") ||message.includes("歘") ||message.includes("桋") ||message.includes("鼜") ||message.includes("窭") ||message.includes("谡") ||message.includes("輽") ||message.includes("怼") ||message.includes("霽") ||message.includes("椣") ||message.includes("䖎") ||message.includes("蘗") ||message.includes("徠"))
     {
         return true;
     }else return false;
